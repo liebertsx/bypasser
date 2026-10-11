@@ -1,3 +1,4 @@
+import os
 import random
 import re
 from urllib.parse import unquote, urljoin
@@ -12,7 +13,7 @@ userAgent = (
     "(KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36"
 )
 
-server = Flask(__name__)
+app = Flask(__name__)
 
 
 def getXsrf(session, domain):
@@ -101,7 +102,7 @@ def resolve(slug):
     return final
 
 
-@server.get("/bypass")
+@app.get("/bypass")
 def resolveEndpoint():
     slug = request.args.get("slug")
     if not slug:
@@ -117,4 +118,4 @@ def resolveEndpoint():
 
 
 if __name__ == "__main__":
-    server.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
